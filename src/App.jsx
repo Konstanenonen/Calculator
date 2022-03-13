@@ -8,27 +8,10 @@ function App() {
     displayValue: '0',
   });
 
-  function doCalculation(operator, operation) {
-    if (calculation.operation === null) {
-      setCalculation((prevState) => ({
-        ...prevState,
-        operation,
-        displayValue: prevState.firstValue + operator,
-      }));
-    } else {
-      setCalculation((prevState) => ({
-        firstValue: prevState.operation(prevState.firstValue, prevState.secondValue),
-        secondValue: '0',
-        operation,
-        displayValue: prevState.operation(prevState.firstValue, prevState.secondValue) + operator,
-      }));
-    }
-  }
-
   function addNumber(number) {
     if (number === '0' && calculation.displayValue === '0') return;
     if (number === '.' && calculation.displayValue[calculation.displayValue.length - 1] === '.') return;
-    if (number === '.' && (calculation.firstValue.includes('.') && calculation.secondValue.includes('.'))) return;
+    if (number === '.' && calculation.displayValue.includes('.') && calculation.secondValue === '0') return;
     setCalculation((prevState) => {
       if (prevState.firstValue === null || prevState.operation === null) {
         return {
@@ -43,6 +26,70 @@ function App() {
         displayValue: prevState.displayValue + number,
       };
     });
+  }
+
+  function add(a, b) {
+    const result = Number(a) + Number(b);
+    if (result.toString().length > 10) {
+      return result.toFixed(5);
+    }
+    return Number.isInteger(result) ? result : result.toFixed(1);
+  }
+
+  function subsrtact(a, b) {
+    const result = Number(a) - Number(b);
+    if (result.toString().length > 10) {
+      return result.toFixed(5);
+    }
+    return Number.isInteger(result) ? result : result.toFixed(1);
+  }
+
+  function multiply(a, b) {
+    const result = Number(a) * Number(b);
+    if (result.toString().length > 10) {
+      return result.toFixed(5);
+    }
+    return Number.isInteger(result) ? result : result.toFixed(1);
+  }
+
+  function divide(a, b) {
+    const result = Number(a) / Number(b);
+    if (result.toString().length > 10) {
+      return result.toFixed(5);
+    }
+    return Number.isInteger(result) ? result : result.toFixed(1);
+  }
+
+  function doCalculation(operator, operation) {
+    if (calculation.operation === null) {
+      setCalculation((prevState) => ({
+        ...prevState,
+        operation,
+        displayValue: prevState.firstValue + operator,
+      }));
+    } else if (operator === '-' && calculation.secondValue === '0') {
+      setCalculation((prevState) => ({
+        ...prevState,
+        operator: add,
+        secondValue: `-${prevState.secondValue}`,
+        displayValue: prevState.displayValue + operator,
+      }));
+    } else if ((calculation.secondValue === '0' || calculation.secondValue === '-0') && calculation.operation !== null) {
+      setCalculation((prevState) => ({
+        ...prevState,
+        operation,
+        displayValue: prevState.displayValue + operator,
+        // eslint-disable-next-line max-len
+        secondValue: Math.abs(prevState.secondValue),
+      }));
+    } else {
+      setCalculation((prevState) => ({
+        firstValue: prevState.operation(prevState.firstValue, prevState.secondValue),
+        secondValue: '0',
+        operation,
+        displayValue: prevState.operation(prevState.firstValue, prevState.secondValue) + operator,
+      }));
+    }
   }
 
   function clear() {
@@ -68,28 +115,6 @@ function App() {
     }));
   }
 
-  function add(a, b) {
-    const result = Number(a) + Number(b);
-    return Number.isInteger(result) ? result : result.toFixed(1);
-  }
-
-  function subsrtact(a, b) {
-    const result = Number(a) - Number(b);
-    return Number.isInteger(result) ? result : result.toFixed(1);
-  }
-
-  function multiply(a, b) {
-    const result = Number(a) * Number(b);
-    return Number.isInteger(result) ? result : result.toFixed(1);
-  }
-
-  function divide(a, b) {
-    const result = Number(a) / Number(b);
-    return Number.isInteger(result) ? result : result.toFixed(1);
-  }
-
-  console.log(calculation);
-
   return (
     <div className="App">
       <div className="calculator-container">
@@ -97,7 +122,6 @@ function App() {
           <div className="result">{calculation.displayValue}</div>
           <div id="display">{calculation.firstValue}</div>
         </div>
-        <button onClick={() => addNumber('0')} type="button" id="zero">0</button>
         <button onClick={() => addNumber('1')} type="button" id="one">1</button>
         <button onClick={() => addNumber('2')} type="button" id="two">2</button>
         <button onClick={() => addNumber('3')} type="button" id="three">3</button>
@@ -107,11 +131,12 @@ function App() {
         <button onClick={() => addNumber('7')} type="button" id="seven">7</button>
         <button onClick={() => addNumber('8')} type="button" id="eight">8</button>
         <button onClick={() => addNumber('9')} type="button" id="nine">9</button>
-        <button onClick={() => addOperator('+', add)} type="button" id="add">+</button>
-        <button onClick={() => addOperator('-', subsrtact)} type="button" id="subtract">-</button>
-        <button onClick={() => addOperator('*', multiply)} type="button" id="multiply">*</button>
-        <button onClick={() => addOperator('/', divide)} type="button" id="divide">/</button>
-        <button onClick={() => addNumber('.')} type="button" id="decimal">.</button>
+        <button onClick={() => addOperator('+', add)} type="button" id="add" className="operations">+</button>
+        <button onClick={() => addNumber('0')} type="button" id="zero">0</button>
+        <button onClick={() => addOperator('-', subsrtact)} type="button" id="subtract" className="operations">-</button>
+        <button onClick={() => addOperator('*', multiply)} type="button" id="multiply" className="operations">*</button>
+        <button onClick={() => addOperator('/', divide)} type="button" id="divide" className="operations">/</button>
+        <button onClick={() => addNumber('.')} type="button" id="decimal" className="operations">.</button>
         <button onClick={calculate} type="button" id="equals">=</button>
         <button onClick={clear} type="button" id="clear">clear</button>
       </div>
