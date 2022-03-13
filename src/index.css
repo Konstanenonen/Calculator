@@ -70,3 +70,9 @@ button:active {
 .operations {
   background-color: rgb(206, 206, 206);
 }
+
+@media screen and (max-width: 600px) {
+  body {
+    padding: 50px 0;
+  }
+}
