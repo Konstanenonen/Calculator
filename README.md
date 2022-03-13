@@ -1,3 +1,3 @@
 # Calculator
-
-Simple calculator for basic math. Display for the formula and end value.
+## [Link to live preview](https://konstanenonen.github.io/Calculator/)
+Simple calculator for basic math. Displays the end value and the formula. I did this project as a task for two different learning platforms. [freeCodeCamp](https://www.freecodecamp.org/learn/front-end-development-libraries/front-end-development-libraries-projects/build-a-javascript-calculator) and [The Odin Project](https://www.theodinproject.com/paths/foundations/courses/foundations/lessons/calculator)
