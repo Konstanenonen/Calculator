@@ -28,36 +28,31 @@ function App() {
     });
   }
 
-  function add(a, b) {
-    const result = Number(a) + Number(b);
+  function roundResult(result) {
     if (result.toString().length > 10) {
       return result.toFixed(5);
     }
     return Number.isInteger(result) ? result : result.toFixed(1);
+  }
+
+  function add(a, b) {
+    const result = Number(a) + Number(b);
+    return roundResult(result);
   }
 
   function subsrtact(a, b) {
     const result = Number(a) - Number(b);
-    if (result.toString().length > 10) {
-      return result.toFixed(5);
-    }
-    return Number.isInteger(result) ? result : result.toFixed(1);
+    return roundResult(result);
   }
 
   function multiply(a, b) {
     const result = Number(a) * Number(b);
-    if (result.toString().length > 10) {
-      return result.toFixed(5);
-    }
-    return Number.isInteger(result) ? result : result.toFixed(1);
+    return roundResult(result);
   }
 
   function divide(a, b) {
     const result = Number(a) / Number(b);
-    if (result.toString().length > 10) {
-      return result.toFixed(5);
-    }
-    return Number.isInteger(result) ? result : result.toFixed(1);
+    return roundResult(result);
   }
 
   function doCalculation(operator, operation) {
@@ -100,10 +95,6 @@ function App() {
     });
   }
 
-  function addOperator(operator, operatorFunction) {
-    doCalculation(operator, operatorFunction);
-  }
-
   function calculate() {
     if (calculation.operation === null) return;
     setCalculation((prevState) => ({
@@ -130,11 +121,11 @@ function App() {
         <button onClick={() => addNumber('7')} type="button" id="seven">7</button>
         <button onClick={() => addNumber('8')} type="button" id="eight">8</button>
         <button onClick={() => addNumber('9')} type="button" id="nine">9</button>
-        <button onClick={() => addOperator('+', add)} type="button" id="add" className="operations">+</button>
+        <button onClick={() => doCalculation('+', add)} type="button" id="add" className="operations">+</button>
         <button onClick={() => addNumber('0')} type="button" id="zero">0</button>
-        <button onClick={() => addOperator('-', subsrtact)} type="button" id="subtract" className="operations">-</button>
-        <button onClick={() => addOperator('*', multiply)} type="button" id="multiply" className="operations">*</button>
-        <button onClick={() => addOperator('/', divide)} type="button" id="divide" className="operations">/</button>
+        <button onClick={() => doCalculation('-', subsrtact)} type="button" id="subtract" className="operations">-</button>
+        <button onClick={() => doCalculation('*', multiply)} type="button" id="multiply" className="operations">*</button>
+        <button onClick={() => doCalculation('/', divide)} type="button" id="divide" className="operations">/</button>
         <button onClick={() => addNumber('.')} type="button" id="decimal" className="operations">.</button>
         <button onClick={calculate} type="button" id="equals">=</button>
         <button onClick={clear} type="button" id="clear">AC</button>
