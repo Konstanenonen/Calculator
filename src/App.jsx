@@ -78,9 +78,9 @@ function App() {
       setCalculation((prevState) => ({
         ...prevState,
         operation,
-        displayValue: prevState.displayValue + operator,
+        displayValue: prevState.displayValue.split('').slice(0, prevState.displayValue.length - 1).join('') + operator,
         // eslint-disable-next-line max-len
-        secondValue: Math.abs(prevState.secondValue),
+        secondValue: Math.abs(prevState.secondValue).toString(),
       }));
     } else {
       setCalculation((prevState) => ({
@@ -114,6 +114,8 @@ function App() {
       displayValue: `${prevState.displayValue} = ${prevState.operation(prevState.firstValue, prevState.secondValue)}`,
     }));
   }
+
+  console.log(calculation);
 
   return (
     <div className="App">
