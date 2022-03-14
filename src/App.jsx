@@ -137,7 +137,7 @@ function App() {
         <button onClick={() => addOperator('/', divide)} type="button" id="divide" className="operations">/</button>
         <button onClick={() => addNumber('.')} type="button" id="decimal" className="operations">.</button>
         <button onClick={calculate} type="button" id="equals">=</button>
-        <button onClick={clear} type="button" id="clear">clear</button>
+        <button onClick={clear} type="button" id="clear">AC</button>
       </div>
     </div>
   );
