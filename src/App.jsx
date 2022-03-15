@@ -12,6 +12,8 @@ function App() {
     if (number === '0' && calculation.displayValue === '0') return;
     if (number === '.' && calculation.displayValue[calculation.displayValue.length - 1] === '.') return;
     if (number === '.' && calculation.displayValue.includes('.') && calculation.secondValue === '0') return;
+    if (number === '.' && calculation.firstValue.includes('.') && calculation.secondValue.includes('.')) return;
+
     setCalculation((prevState) => {
       if (prevState.firstValue === null || prevState.operation === null) {
         return {
@@ -22,7 +24,7 @@ function App() {
       }
       return {
         ...prevState,
-        secondValue: prevState.secondValue + number,
+        secondValue: prevState.secondValue === '0' ? number : prevState.secondValue + number,
         displayValue: prevState.displayValue + number,
       };
     });
