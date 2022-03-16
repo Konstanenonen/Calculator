@@ -13,6 +13,7 @@ function App() {
     if (number === '.' && calculation.displayValue[calculation.displayValue.length - 1] === '.') return;
     if (number === '.' && calculation.displayValue.includes('.') && calculation.secondValue === '0') return;
     if (number === '.' && calculation.firstValue.includes('.') && calculation.secondValue.includes('.')) return;
+    if (number === '.' && calculation.secondValue.includes('.')) return;
 
     setCalculation((prevState) => {
       if (prevState.firstValue === null || prevState.operation === null) {
